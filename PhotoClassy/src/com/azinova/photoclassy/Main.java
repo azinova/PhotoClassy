@@ -18,10 +18,16 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class Main extends Activity
 {
 	File file;
+	Uri outputFileUri;
+	ImageView mIv;
+	int SAMPLE_SIZE = 1;
+	String PICTURE_PATH ;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -30,6 +36,8 @@ public class Main extends Activity
 		setContentView(R.layout.main);
 		
 		
+		mIv = (ImageView)findViewById(R.id.imageView1);
+                
 		Button btGallery = (Button)findViewById(R.id.button1_gallery);
 		btGallery.setOnClickListener(new View.OnClickListener()
 		{
@@ -53,8 +61,9 @@ public class Main extends Activity
 			{
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
 				file = new File(Environment.getExternalStorageDirectory(),
-						ReceiptData.PICTURE_PATH + String.valueOf(System.currentTimeMillis()) + ".jpg"); 
-				 
+						PICTURE_PATH + String.valueOf(System.currentTimeMillis()) + ".jpg"); 
+			
+				
 				outputFileUri = Uri.fromFile(file); 
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri); 
 				 
@@ -93,8 +102,10 @@ public class Main extends Activity
 	        break; 
 	 
 	      case -1: 
-	                   
-	        mIv.setImageBitmap(mi.setupImage(data)); 
+	    	  
+	        mIv.setImageBitmap(setupImage(data)); 
+	        
+	        
 	        break; 
 	    } 
 	  } 
@@ -111,8 +122,9 @@ public class Main extends Activity
 		 
 		    Log.v("ManageImage-hero", "the data.getData seems to be valid"); 
 		    
-		    file
+		    //file
 		    FileOutputStream out = new FileOutputStream(outputFileUri.getPath()); 
+		   
 		    tempBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); 
 		  } catch (NullPointerException ex) { 
 		    Log.v("ManageImage-other", "another phone type"); 
