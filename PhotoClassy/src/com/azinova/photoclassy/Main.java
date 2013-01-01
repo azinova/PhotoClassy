@@ -1,33 +1,30 @@
 package com.azinova.photoclassy;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-import com.azinova.splash.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.azinova.photoclassy.globals.GlobalsClass;
+import com.azinova.splash.R;
 
 public class Main extends Activity
 {
 	File file;
 	Uri outputFileUri;
 	ImageView mIv;
-	int SAMPLE_SIZE = 1;
-	String PICTURE_PATH ;
 	
+	private static final int CAMERA_REQUEST = 1888; 
+	private static int RESULT_LOAD_IMAGE = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -35,21 +32,19 @@ public class Main extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		
 		mIv = (ImageView)findViewById(R.id.imageView1);
                 
 		Button btGallery = (Button)findViewById(R.id.button1_gallery);
 		btGallery.setOnClickListener(new View.OnClickListener()
 		{
-			
+			  
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent();
-				intent.setType("image/*");
-				intent.setAction(Intent.ACTION_GET_CONTENT);
-				startActivity(intent);
-				//startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_IMAGE);
+				
+				 Intent i = new Intent(Intent.ACTION_PICK,
+	                       android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+	             startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}
 		});
 		Button btCamera = (Button)findViewById(R.id.button2_camera);
@@ -59,22 +54,15 @@ public class Main extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
-				file = new File(Environment.getExternalStorageDirectory(),
-						PICTURE_PATH + String.valueOf(System.currentTimeMillis()) + ".jpg"); 
-			
 				
-				outputFileUri = Uri.fromFile(file); 
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri); 
-				 
-				startActivityForResult(intent, 1); 
-
-				
+				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+                startActivityForResult(cameraIntent, CAMERA_REQUEST); 
+                System.out.println("after intent inside click");
 			}
 		});
 		Button btSavedImg = (Button)findViewById(R.id.button3_savedImg);
 		btSavedImg.setOnClickListener(new View.OnClickListener()
-		{
+		{  
 			
 			@Override
 			public void onClick(View v)
@@ -82,8 +70,8 @@ public class Main extends Activity
 				
 			}
 		});
-		Button btHelp = (Button)findViewById(R.id.button4_help);
-		btHelp.setOnClickListener(new View.OnClickListener()
+		Button btHelp = (Button)findViewById(R.id.button4_help); 
+		btHelp.setOnClickListener(new View.OnClickListener()    
 		{
 			
 			@Override
@@ -93,8 +81,41 @@ public class Main extends Activity
 			}
 		});
 	}
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	 {  
+	        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK)
+	        {  
+	             Bitmap photo = (Bitmap)data.getExtras().get("data"); 
+	             mIv.setImageBitmap(photo);
+	             System.out.println("req "+requestCode+"result "+resultCode);
+	            
+	             Intent intent = new Intent(getApplicationContext(), EditClass.class);
+	             GlobalsClass globals = GlobalsClass.getInstance();
+	             globals.setBitmap(photo);
+	             startActivity(intent); 
+	             
+	        }       
+	        
+	        
+	        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data)
+            {
+                   Uri selectedImage = data.getData();
+                   String[] filePathColumn = { MediaStore.Images.Media.DATA };
+           
+                   Cursor cursor = getContentResolver().query(selectedImage,
+                           filePathColumn, null, null, null);
+                   cursor.moveToFirst();
+           
+                   int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                   String picturePath = cursor.getString(columnIndex);
+                   cursor.close();
+                   
+                   mIv.setImageBitmap(BitmapFactory.decodeFile(picturePath)); 
+            } 
+
+	 } 
 	 
-	@Override 
+	/*@Override 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
 	  if (requestCode == 1) { 
 	    switch( resultCode ) { 
@@ -106,23 +127,24 @@ public class Main extends Activity
 	        mIv.setImageBitmap(setupImage(data)); 
 	        
 	        
-	        break; 
+	        break;  
 	    } 
 	  } 
 	} 
-	public Bitmap setupImage(Intent data) { 
+	public Bitmap setupImage(Intent data) 
+	{ 
 		  BitmapFactory.Options options = new BitmapFactory.Options(); 
 		  options.inSampleSize = SAMPLE_SIZE;     // SAMPLE_SIZE = 2 
 		 
 		  Bitmap tempBitmap = null; 
 		  Bitmap bm = null; 
-		  try { 
+		  try
+		  { 
 		    tempBitmap = (Bitmap) data.getExtras().get("data"); 
 		    bm = tempBitmap; 
 		 
 		    Log.v("ManageImage-hero", "the data.getData seems to be valid"); 
 		    
-		    //file
 		    FileOutputStream out = new FileOutputStream(outputFileUri.getPath()); 
 		   
 		    tempBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); 
@@ -139,7 +161,8 @@ public class Main extends Activity
 		{ 
 		  Bitmap bm = null; 
 		 
-		  try { 
+		  try 
+		  { 
 		    FileInputStream fis = new FileInputStream(outputFileUri.getPath()); 
 		    BufferedInputStream bis = new BufferedInputStream(fis); 
 		    bm = BitmapFactory.decodeStream(bis, null, options); 
@@ -152,7 +175,7 @@ public class Main extends Activity
 		  } 
 		 
 		  return bm; 
-		} 
+		} */
 
 
 }
