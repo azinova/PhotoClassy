@@ -2,11 +2,14 @@ package com.azinova.photoclassy;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +25,11 @@ public class EditClass extends Activity
 	ImageView imageView;
 	GlobalsClass globals;
 	int seekBarDetector;
+	
+    private Bitmap bmp;  
+  
+    //an integer array that will store ARGB pixel values  
+    private int[][] rgbValues;  
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -29,7 +37,7 @@ public class EditClass extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_class);
 		
-		
+		 
 		globals = GlobalsClass.getInstance();
 		imageView = (ImageView)findViewById(R.id.imageView1);
 		imageView.setImageBitmap(globals.getBitmap());
@@ -51,6 +59,7 @@ public class EditClass extends Activity
 				seekBarDetector = 1;
 			}
 		});
+	
 		Button btnHue = (Button)findViewById(R.id.btnHue);
 		btnHue.setOnClickListener(new View.OnClickListener()
 		{
@@ -64,7 +73,8 @@ public class EditClass extends Activity
 				
 			}
 		});
-		Button btnSaturated = (Button)findViewById(R.id.btnSaturated);
+
+		Button btnSaturated = (Button)findViewById(R.id.btnSaturated); 
 		btnSaturated.setOnClickListener(new View.OnClickListener()
 		{
 			
@@ -77,6 +87,7 @@ public class EditClass extends Activity
 				
 			}
 		});
+
 		Button btnBlackWhite = (Button)findViewById(R.id.btnBlackWhite);
 		btnBlackWhite.setOnClickListener(new View.OnClickListener()
 		{
@@ -90,7 +101,55 @@ public class EditClass extends Activity
 				
 			}
 		});
+	
+		Button btnRGB = (Button)findViewById(R.id.btnRBG);
+		btnRGB.setOnClickListener(new View.OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v) 
+			{
+					bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);  
+				  
+			        //define the array size  
+			        rgbValues = new int[bmp.getWidth()][bmp.getHeight()];  
+			  
+			        //Print in LogCat's console each of one the RGB and alpha values from the 4 corners of the image  
+			        //Top Left  
+			        Log.i("Pixel Value", "Top Left pixel: " + Integer.toHexString(bmp.getPixel(0, 0)));  
+			        //Top Right  
+			        Log.i("Pixel Value", "Top Right pixel: " + Integer.toHexString(bmp.getPixel(31, 0)));  
+			        //Bottom Left  
+			        Log.i("Pixel Value", "Bottom Left pixel: " + Integer.toHexString(bmp.getPixel(0, 31)));  
+			        //Bottom Right  
+			        Log.i("Pixel Value", "Bottom Right pixel: " + Integer.toHexString(bmp.getPixel(31, 31)));  
+			  
+			        //get the ARGB value from each pixel of the image and store it into the array  
+			        for(int i=0; i < bmp.getWidth(); i++)  
+			        {  
+			            for(int j=0; j < bmp.getHeight(); j++)  
+			            {  
+			                //This is a great opportunity to filter the ARGB values  
+			                rgbValues[i][j] = bmp.getPixel(i, j);  
+			            }  
+			        }  
+				
+			}
+		});
 		
+		Button btnSharpness  = (Button)findViewById(R.id.btnSharpness);
+		btnSharpness.setOnClickListener(new View.OnClickListener() 
+        {
+            @Override
+            public void onClick(View v) 
+            {
+            	barHue.setProgress(0);
+				barHue.setVisibility(View.VISIBLE); 
+				seekBarDetector = 5;
+                   
+            }
+        });
+
 		
 	}  
 	  OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener()
@@ -119,6 +178,11 @@ public class EditClass extends Activity
 				else if (seekBarDetector == 4) 
 				{
 					imageView.setImageBitmap(EditClass.createContrast(globals.getBitmap(), arg1));
+				}
+				else if(seekBarDetector == 5)
+				{
+					Bitmap bitmapBlackWhite = RuiHuaBitmap(globals.getBitmap());
+	                imageView.setImageBitmap(bitmapBlackWhite);
 				}
 				
 			}
@@ -170,6 +234,7 @@ public class EditClass extends Activity
 	{
 	    return Math.min(p_limit, Math.max(-p_limit, p_val));
 	}
+
 	public static Bitmap applySaturationFilter(Bitmap source, int level) {
 		// get image size
 		int width = source.getWidth();
@@ -199,6 +264,7 @@ public class EditClass extends Activity
 		bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
 		return bmOut;
 	}
+
 	public static Bitmap applyShadingFilter(Bitmap source, int shadingColor) {
 		// get image size
 		int width = source.getWidth();
@@ -222,7 +288,8 @@ public class EditClass extends Activity
 		bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
 		return bmOut;
 	}
-	 public static Bitmap createContrast(Bitmap src, double value) {
+	
+	public static Bitmap createContrast(Bitmap src, double value) {
 		// image size
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -263,7 +330,8 @@ public class EditClass extends Activity
 
 		return bmOut;
 		 }
-	 public static Bitmap doBrightness(Bitmap src, int value)
+
+	public static Bitmap doBrightness(Bitmap src, int value)
      {
                  int width = src.getWidth();
                  int height = src.getHeight();
@@ -305,4 +373,41 @@ public class EditClass extends Activity
                  // return final image
                  return bmOut;
              }
+
+	public Bitmap RuiHuaBitmap(Bitmap bitmap) 
+	{
+         int width, height;
+         height = bitmap.getHeight();
+         width = bitmap.getWidth();
+         int red, green, blue;
+         int a1, a2, a3, a4, a5, a6, a7, a8, a9;
+         Bitmap bmpBlurred = Bitmap.createBitmap(width, height,bitmap.getConfig());
+
+         Canvas canvas = new Canvas(bmpBlurred);
+
+         canvas.drawBitmap(bitmap, 0, 0, null);
+         for (int i = 1; i < width - 1; i++)
+         {
+             for (int j = 1; j < height - 1; j++) 
+             {
+
+                 a1 = bitmap.getPixel(i - 1, j - 1);
+                 a2 = bitmap.getPixel(i - 1, j);
+                 a3 = bitmap.getPixel(i - 1, j + 1);
+                 a4 = bitmap.getPixel(i, j - 1);
+                 a5 = bitmap.getPixel(i, j);
+                 a6 = bitmap.getPixel(i, j + 1);
+                 a7 = bitmap.getPixel(i + 1, j - 1);
+                 a8 = bitmap.getPixel(i + 1, j);
+                 a9 = bitmap.getPixel(i + 1, j + 1);
+
+                 red = (Color.red(a1) + Color.red(a2) + Color.red(a3) + Color.red(a4) + Color.red(a6) + Color.red(a7) + Color.red(a8) + Color.red(a9)) *(-1)   + Color.red(a5)*9 ;
+                 green = (Color.green(a1) + Color.green(a2) + Color.green(a3) + Color.green(a4) + Color.green(a6) + Color.green(a7) + Color.green(a8) + Color.green(a9)) *(-1)  + Color.green(a5)*9 ;
+                 blue = (Color.blue(a1) + Color.blue(a2) + Color.blue(a3) + Color.blue(a4) + Color.blue(a6) + Color.blue(a7) + Color.blue(a8) + Color.blue(a9)) *(-1)   + Color.blue(a5)*9 ;
+
+                 bmpBlurred.setPixel(i, j, Color.rgb(red, green, blue));
+             }
+         }
+         return bmpBlurred;
+     }
 }
