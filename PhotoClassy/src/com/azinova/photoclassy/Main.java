@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,25 +22,26 @@ public class Main extends Activity
 {
 	File file;
 	Uri outputFileUri;
-	ImageView mIv;
-	
+	GlobalsClass globals;
+	  
 	private static final int CAMERA_REQUEST = 1888; 
 	private static int RESULT_LOAD_IMAGE = 1;
+	int targetHeight = 250, targetWidth = 250;  
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	protected void onCreate(Bundle savedInstanceState) 
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);  
 		setContentView(R.layout.main);
 		
-		mIv = (ImageView)findViewById(R.id.imageView1);
+		globals = GlobalsClass.getInstance();
                 
 		Button btGallery = (Button)findViewById(R.id.button1_gallery);
-		btGallery.setOnClickListener(new View.OnClickListener()
+		btGallery.setOnClickListener(new View.OnClickListener() 
 		{
 			  
 			@Override
-			public void onClick(View v)
+			public void onClick(View v)     
 			{
 				
 				 Intent i = new Intent(Intent.ACTION_PICK,
@@ -51,13 +53,12 @@ public class Main extends Activity
 		btCamera.setOnClickListener(new View.OnClickListener()
 		{
 			
-			@Override
-			public void onClick(View v)
+			@Override 
+			public void onClick(View v)        
 			{
 				
 				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
                 startActivityForResult(cameraIntent, CAMERA_REQUEST); 
-                System.out.println("after intent inside click");
 			}
 		});
 		Button btSavedImg = (Button)findViewById(R.id.button3_savedImg);
@@ -65,17 +66,17 @@ public class Main extends Activity
 		{  
 			
 			@Override
-			public void onClick(View v)
+			public void onClick(View v) 
 			{
 				
-			}
+			} 
 		});
 		Button btHelp = (Button)findViewById(R.id.button4_help); 
 		btHelp.setOnClickListener(new View.OnClickListener()    
 		{
 			
 			@Override
-			public void onClick(View v)
+			public void onClick(View v) 
 			{
 				
 			}
@@ -86,96 +87,75 @@ public class Main extends Activity
 	        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK)
 	        {  
 	             Bitmap photo = (Bitmap)data.getExtras().get("data"); 
-	             mIv.setImageBitmap(photo);
-	             System.out.println("req "+requestCode+"result "+resultCode);
 	            
-	             Intent intent = new Intent(getApplicationContext(), EditClass.class);
-	             GlobalsClass globals = GlobalsClass.getInstance();
+	             Intent intent = new Intent(getApplicationContext(), MenuClass.class);
+	            
 	             globals.setBitmap(photo);
-	             startActivity(intent); 
+	             startActivity(intent);  
 	             
 	        }       
 	        
-	        
-	        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data)
-            {
-                   Uri selectedImage = data.getData();
-                   String[] filePathColumn = { MediaStore.Images.Media.DATA };
-           
-                   Cursor cursor = getContentResolver().query(selectedImage,
-                           filePathColumn, null, null, null);
-                   cursor.moveToFirst();
-           
-                   int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                   String picturePath = cursor.getString(columnIndex);
-                   cursor.close();
-                   
-                   mIv.setImageBitmap(BitmapFactory.decodeFile(picturePath)); 
-            } 
+	        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) 
+	        {
+	                  Uri selectedImage = data.getData();
+	                  String[] filePathColumn = { MediaStore.Images.Media.DATA };
+	          
+	                  Cursor cursor = getContentResolver().query(selectedImage,
+	                          filePathColumn, null, null, null);
+	                  cursor.moveToFirst();
+	          
+	                  int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+	                  String picturePath = cursor.getString(columnIndex);
+	                  cursor.close();
+	                   
+	                  Bitmap bmGallery = custom_SizedImage(picturePath) ;
+	                      
+	                 Intent intent = new Intent(getApplicationContext(), MenuClass.class);
+	                       globals.setBitmap(bmGallery);  
+	                 startActivity(intent); 
+	         }
+	 
 
 	 } 
-	 
-	/*@Override 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
-	  if (requestCode == 1) { 
-	    switch( resultCode ) { 
-	      case 0: 
-	        break; 
-	 
-	      case -1: 
-	    	  
-	        mIv.setImageBitmap(setupImage(data)); 
-	        
-	        
-	        break;  
-	    } 
-	  } 
-	} 
-	public Bitmap setupImage(Intent data) 
-	{ 
-		  BitmapFactory.Options options = new BitmapFactory.Options(); 
-		  options.inSampleSize = SAMPLE_SIZE;     // SAMPLE_SIZE = 2 
-		 
-		  Bitmap tempBitmap = null; 
-		  Bitmap bm = null; 
-		  try
-		  { 
-		    tempBitmap = (Bitmap) data.getExtras().get("data"); 
-		    bm = tempBitmap; 
-		 
-		    Log.v("ManageImage-hero", "the data.getData seems to be valid"); 
-		    
-		    FileOutputStream out = new FileOutputStream(outputFileUri.getPath()); 
-		   
-		    tempBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); 
-		  } catch (NullPointerException ex) { 
-		    Log.v("ManageImage-other", "another phone type"); 
-		    bm = otherImageProcessing(options); 
-		  } catch(Exception e) { 
-		    Log.e("ManageImage-setupImage", "problem setting up the image", e); 
-		  } 
-		 
-		  return bm; 
-		} 
-		private Bitmap otherImageProcessing(BitmapFactory.Options options)
-		{ 
-		  Bitmap bm = null; 
-		 
-		  try 
-		  { 
-		    FileInputStream fis = new FileInputStream(outputFileUri.getPath()); 
-		    BufferedInputStream bis = new BufferedInputStream(fis); 
-		    bm = BitmapFactory.decodeStream(bis, null, options); 
-		 
-		    // cleaning up 
-		    fis.close(); 
-		    bis.close(); 
-		  } catch(Exception e) { 
-		    Log.e("ManageImage-otherImageProcessing", "Cannot load image", e); 
-		  } 
-		 
-		  return bm; 
-		} */
+	 public Bitmap custom_SizedImage(String intent_data2)  
+     {
+             Bitmap scaledBitmap = null;
+             Options options = new Options();
+             options.inJustDecodeBounds = true;
+             BitmapFactory.decodeFile(intent_data2, options);
+             double sampleSize = 0; 
+             
+                     Boolean scaleByHeight = Math.abs(options.outHeight - targetHeight) >= Math
+                     .abs(options.outWidth - targetWidth);
 
-
+             if (options.outHeight * options.outWidth * 2 >= 1638) 
+             {
+                 sampleSize = scaleByHeight ? options.outHeight / targetHeight
+                         : options.outWidth / targetWidth;
+                 sampleSize = (int) Math.pow(2d,
+                         Math.floor(Math.log(sampleSize) / Math.log(2d)));
+             }
+             options.inJustDecodeBounds = false;
+             options.inTempStorage = new byte[128];
+             while (true)
+             {
+                 try 
+                 {
+                     options.inSampleSize = (int) sampleSize;
+                     scaledBitmap = BitmapFactory.decodeFile(intent_data2, options);
+                     break;
+                 } 
+                 catch (Exception ex)
+                 {
+                     try
+                     {
+                         sampleSize = sampleSize * 2;
+                     } 
+                     catch (Exception ex1) 
+                     {
+                     }
+                 }
+             }
+             return scaledBitmap;
+      }
 }

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+
+    android:layout_height="fill_parent"
+
+    android:orientation="vertical"
+
+    android:weightSum="4.1" >
+
+
+
+    <RelativeLayout android:id="@+id/lytTopBar"
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+
+        android:background="#424242"
+
+        android:layout_weight="1.2">
+
+        <Button
+
+                        android:id="@+id/btnShare"
+
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_centerVertical="true"
+
+                        android:text="Share"
+
+                        android:layout_marginLeft="5dp"/>
+
+        <Button
+
+                        android:id="@+id/btnSave"
+
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_centerVertical="true"
+
+                        android:text="Save"
+
+                        android:gravity="right"
+
+                        android:layout_alignParentRight="true"
+
+                        android:layout_marginRight="5dp"/>
+
+    </RelativeLayout>
+
+    
+
+    <LinearLayout android:id="@+id/lytTopMenu"
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+
+        android:background="#BDBDBD"
+
+        android:layout_weight="1.2">
+
+
+
+        <Button
+
+                        android:id="@+id/btnEdit"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:text="Edit"
+
+                        />
+
+                   
+
+
+                     <Button
+
+                        android:id="@+id/btnCrop"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="Crop"/>
+
+                     
+
+
+                     <Button
+
+                        android:id="@+id/btnECard"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:background="#FFFFFF"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="E-Card"/>
+
+                       
+
+<Button
+
+                        android:id="@+id/btnZoom"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:background="#FFFFFF"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="Zoom"/>
+
+                       
+
+        
+
+    </LinearLayout>
+
+    <ImageView
+
+        android:id="@+id/imageView1"
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+
+        android:layout_marginLeft="10dp"
+
+        android:layout_marginRight="10dp"
+
+        android:layout_weight=".5"
+
+        />
+
+       
+
+     <LinearLayout android:id="@+id/lytBottomMenu"
+
+        android:layout_width="fill_parent"
+
+        android:layout_height="fill_parent"
+
+        android:background="#BDBDBD"
+
+        android:layout_weight="1.2">
+
+
+
+        <Button
+
+                        android:id="@+id/btnRotate"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:text="Rotate"
+
+                        />
+
+                   
+
+
+                     <Button
+
+                        android:id="@+id/btnText"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:background="#ffffff"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="Text"/>
+
+                     
+
+
+                     <Button
+
+                        android:id="@+id/btnFunny"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:background="#FFFFFF"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="Funny"/>
+
+                       
+
+<Button
+
+                        android:id="@+id/btnFrame"
+
+                        android:layout_width="0dip"
+
+                        android:layout_height="wrap_content"
+
+                        android:textSize="16dip"
+
+                        android:layout_weight="1" 
+
+                        android:layout_gravity="center_vertical"
+
+                        android:background="#FFFFFF"
+
+                        android:layout_marginLeft="2dp"
+
+                        android:text="Frame"/>
+
+                       
+
+        
+
+    </LinearLayout>
+
+    
+
+</LinearLayout>
