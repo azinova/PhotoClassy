@@ -2,19 +2,19 @@ package com.azinova.photoclassy;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.graphics.PorterDuff;
 
 import com.azinova.photoclassy.globals.GlobalsClass;
 import com.azinova.splash.R;
@@ -26,10 +26,10 @@ public class EditClass extends Activity
 	GlobalsClass globals;
 	int seekBarDetector;
 	
-    private Bitmap bmp;  
-  
-    //an integer array that will store ARGB pixel values  
-    private int[][] rgbValues;  
+    int i, j;
+    Drawable bitmapOrg;
+	private final int[] mColors =
+	{Color.BLUE, Color.GREEN, Color.RED};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -46,6 +46,9 @@ public class EditClass extends Activity
 		barHue.setVisibility(View.INVISIBLE);
 		
 		barHue.setOnSeekBarChangeListener(seekBarChangeListener); 
+		
+		bitmapOrg = EditClass.this.getResources().getDrawable(R.drawable.ic_launcher); 
+		
 		
 		Button btnBrightness = (Button)findViewById(R.id.btnBrightness);
 		btnBrightness.setOnClickListener(new View.OnClickListener()
@@ -109,31 +112,10 @@ public class EditClass extends Activity
 			@Override
 			public void onClick(View v) 
 			{
-					bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);  
-				  
-			        //define the array size  
-			        rgbValues = new int[bmp.getWidth()][bmp.getHeight()];  
-			  
-			        //Print in LogCat's console each of one the RGB and alpha values from the 4 corners of the image  
-			        //Top Left  
-			        Log.i("Pixel Value", "Top Left pixel: " + Integer.toHexString(bmp.getPixel(0, 0)));  
-			        //Top Right  
-			        Log.i("Pixel Value", "Top Right pixel: " + Integer.toHexString(bmp.getPixel(31, 0)));  
-			        //Bottom Left  
-			        Log.i("Pixel Value", "Bottom Left pixel: " + Integer.toHexString(bmp.getPixel(0, 31)));  
-			        //Bottom Right  
-			        Log.i("Pixel Value", "Bottom Right pixel: " + Integer.toHexString(bmp.getPixel(31, 31)));  
-			  
-			        //get the ARGB value from each pixel of the image and store it into the array  
-			        for(int i=0; i < bmp.getWidth(); i++)  
-			        {  
-			            for(int j=0; j < bmp.getHeight(); j++)  
-			            {  
-			                //This is a great opportunity to filter the ARGB values  
-			                rgbValues[i][j] = bmp.getPixel(i, j);  
-			            }  
-			        }  
 				
+				int mColor = (int) Math.floor(Math.random() * mColors.length);
+                imageView.setColorFilter(mColors[mColor], PorterDuff.Mode.MULTIPLY);
+                imageView.invalidate(); 
 			}
 		});
 		
@@ -146,14 +128,22 @@ public class EditClass extends Activity
             	barHue.setProgress(0);
 				barHue.setVisibility(View.VISIBLE); 
 				seekBarDetector = 5;
-                   
+            	
             }
         });
 
-		
+		Button btnBlurred = (Button)findViewById(R.id.btnBlurred);
+		btnBlurred.setOnClickListener(new View.OnClickListener() 
+        {
+                    @Override
+                    public void onClick(View v) 
+                    {
+                            imageView.setImageBitmap(blurBitmap(globals.getBitmap()));
+                    }
+            });
 	}  
-	  OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener()
-	    {
+	OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener()
+	{
 
 			@Override
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) 
@@ -181,8 +171,8 @@ public class EditClass extends Activity
 				}
 				else if(seekBarDetector == 5)
 				{
-					Bitmap bitmapBlackWhite = RuiHuaBitmap(globals.getBitmap());
-	                imageView.setImageBitmap(bitmapBlackWhite);
+					
+	                imageView.setImageBitmap(EditClass.sharpen(globals.getBitmap(), arg1));
 				}
 				
 			}
@@ -197,7 +187,7 @@ public class EditClass extends Activity
 			public void onStopTrackingTouch(SeekBar seekBar)
 			{
 				
-			}}; 
+	}}; 
 	  
 	public static ColorFilter adjustHue( float value ) 
 	{
@@ -375,6 +365,7 @@ public class EditClass extends Activity
              }
 
 	public Bitmap RuiHuaBitmap(Bitmap bitmap) 
+
 	{
          int width, height;
          height = bitmap.getHeight();
@@ -410,4 +401,43 @@ public class EditClass extends Activity
          }
          return bmpBlurred;
      }
+
+	public static Bitmap sharpen(Bitmap src, double weight)
+    {
+                 double[][] SharpConfig = new double[][] 
+                 {
+                     { 0 , -2    , 0  },
+                     { -2, weight, -2 },
+                     { 0 , -2    , 0  }
+                 };
+                 ConvolutionMatrix convMatrix = new ConvolutionMatrix(3);
+                 convMatrix.applyConfig(SharpConfig);
+                 convMatrix.Factor = weight - 8;
+                 return ConvolutionMatrix.computeConvolution3x3(src, convMatrix);
+     }
+
+	public Bitmap blurBitmap(Bitmap bmpOriginal)
+    {        
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();    
+
+        Bitmap bmpBlurred = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        for (int i = 1; i < width - 1; i++) {
+            for (int j = 1; j < height - 1; j++) {
+                int color = (int) getAverageOfPixel(bmpOriginal, i, j);
+                bmpBlurred.setPixel(i, j, Color.argb(Color.alpha(color), Color.red(color), Color.green(color), Color.blue(color)));
+            }
+        }
+        return bmpBlurred;
+    }
+
+    private double getAverageOfPixel(Bitmap bitmap, int i, int j)
+    {
+         return (
+        bitmap.getPixel(i-1, j-1) + bitmap.getPixel(i-1, j) + bitmap.getPixel(i-1, j+1) +
+        bitmap.getPixel(i, j-1) + bitmap.getPixel(i, j) + bitmap.getPixel(i, j+1) + 
+        bitmap.getPixel(i+1, j-1) + bitmap.getPixel(i+1, j) + bitmap.getPixel(i+1, j+1)) / 9;
+    }
+
 }

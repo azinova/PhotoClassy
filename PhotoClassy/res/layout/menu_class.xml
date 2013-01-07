@@ -1,301 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:layout_width="fill_parent"
-
     android:layout_height="fill_parent"
-
     android:orientation="vertical"
+    android:weightSum="5.4" >
 
-    android:weightSum="4.1" >
-
-
-
-    <RelativeLayout android:id="@+id/lytTopBar"
-
+    <RelativeLayout
+        android:id="@+id/lytTopBar"
         android:layout_width="fill_parent"
-
         android:layout_height="fill_parent"
-
-        android:background="#424242"
-
-        android:layout_weight="1.2">
+        android:layout_weight="1.2"
+        android:background="#424242" >
 
         <Button
-
-                        android:id="@+id/btnShare"
-
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_centerVertical="true"
-
-                        android:text="Share"
-
-                        android:layout_marginLeft="5dp"/>
+            android:id="@+id/btnShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="#ffffff"
+            android:text="Share"
+            android:textSize="16dip" />
 
         <Button
-
-                        android:id="@+id/btnSave"
-
-                        android:layout_width="wrap_content"
-
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_centerVertical="true"
-
-                        android:text="Save"
-
-                        android:gravity="right"
-
-                        android:layout_alignParentRight="true"
-
-                        android:layout_marginRight="5dp"/>
-
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="#ffffff"
+            android:gravity="right"
+            android:text="Save"
+            android:textSize="16dip" />
     </RelativeLayout>
 
-    
-
-    <LinearLayout android:id="@+id/lytTopMenu"
-
+    <LinearLayout
+        android:id="@+id/lytTopMenu"
         android:layout_width="fill_parent"
-
         android:layout_height="fill_parent"
-
-        android:background="#BDBDBD"
-
-        android:layout_weight="1.2">
-
-
+        android:layout_weight="1.2"
+        android:background="#BDBDBD" >
 
         <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:text="Edit"
+            android:textSize="16dip" />
 
-                        android:id="@+id/btnEdit"
+        <Button
+            android:id="@+id/btnCrop"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:text="Crop"
+            android:textSize="16dip" />
 
-                        android:layout_width="0dip"
+        <Button
+            android:id="@+id/btnECard"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="E-Card"
+            android:textSize="16dip" />
 
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:text="Edit"
-
-                        />
-
-                   
-
-
-                     <Button
-
-                        android:id="@+id/btnCrop"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="Crop"/>
-
-                     
-
-
-                     <Button
-
-                        android:id="@+id/btnECard"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:background="#FFFFFF"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="E-Card"/>
-
-                       
-
-<Button
-
-                        android:id="@+id/btnZoom"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:background="#FFFFFF"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="Zoom"/>
-
-                       
-
-        
-
+        <Button
+            android:id="@+id/btnZoom"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="Zoom"
+            android:textSize="16dip" />
     </LinearLayout>
 
     <ImageView
-
         android:id="@+id/imageView1"
-
         android:layout_width="fill_parent"
-
         android:layout_height="fill_parent"
-
         android:layout_marginLeft="10dp"
-
         android:layout_marginRight="10dp"
+        android:layout_weight=".5" />
 
-        android:layout_weight=".5"
-
-        />
-
-       
-
-     <LinearLayout android:id="@+id/lytBottomMenu"
-
+    <LinearLayout
+        android:id="@+id/lytTopMenu"
         android:layout_width="fill_parent"
-
         android:layout_height="fill_parent"
+        android:layout_weight="1.25" >
 
-        android:background="#BDBDBD"
+        <ImageView
+            android:id="@+id/imageViewLeft"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="120dp"
+            android:visibility="gone" 
+            android:layout_gravity="center"/>
 
-        android:layout_weight="1.2">
-
-
-
-        <Button
-
-                        android:id="@+id/btnRotate"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:text="Rotate"
-
-                        />
-
-                   
-
-
-                     <Button
-
-                        android:id="@+id/btnText"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:background="#ffffff"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="Text"/>
-
-                     
-
-
-                     <Button
-
-                        android:id="@+id/btnFunny"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:background="#FFFFFF"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="Funny"/>
-
-                       
-
-<Button
-
-                        android:id="@+id/btnFrame"
-
-                        android:layout_width="0dip"
-
-                        android:layout_height="wrap_content"
-
-                        android:textSize="16dip"
-
-                        android:layout_weight="1" 
-
-                        android:layout_gravity="center_vertical"
-
-                        android:background="#FFFFFF"
-
-                        android:layout_marginLeft="2dp"
-
-                        android:text="Frame"/>
-
-                       
-
-        
-
+        <ImageView
+            android:id="@+id/imageViewRight"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="100dp"
+            android:visibility="gone" 
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"/>
     </LinearLayout>
 
-    
+    <LinearLayout
+        android:id="@+id/lytBottomMenu"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.2"
+        android:background="#BDBDBD" >
+
+        <Button
+            android:id="@+id/btnRotate"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:text="Rotate"
+            android:textSize="16dip" />
+
+        <Button
+            android:id="@+id/btnText"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:text="Text"
+            android:textSize="16dip" />
+
+        <Button
+            android:id="@+id/btnFunny"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="Funny"
+            android:textSize="16dip" />
+
+        <Button
+            android:id="@+id/btnFrame"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="Frame"
+            android:textSize="16dip" />
+    </LinearLayout>
 
 </LinearLayout>
