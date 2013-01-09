@@ -1,4 +1,5 @@
 package com.azinova.photoclassy;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 

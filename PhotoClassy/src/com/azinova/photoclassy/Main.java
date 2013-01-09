@@ -26,7 +26,7 @@ public class Main extends Activity
 	  
 	private static final int CAMERA_REQUEST = 1888; 
 	private static int RESULT_LOAD_IMAGE = 1;
-	int targetHeight = 250, targetWidth = 250;  
+	int targetHeight = 400, targetWidth = 250;  
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 

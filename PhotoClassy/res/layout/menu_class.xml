@@ -86,36 +86,138 @@
             android:textSize="16dip" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView1"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_weight=".5" />
+        
+        android:layout_weight=".5" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+        <TextView  
+            android:id="@+id/txtTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top"
+            android:layout_marginTop="50dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"/>
+        <TextView  
+            android:id="@+id/txtBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom"
+            android:visibility="gone"
+            android:layout_marginBottom="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"/>
+        <TextView  
+            android:id="@+id/txtLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left"
+            android:visibility="gone"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"/>
+        <TextView  
+            android:id="@+id/txtRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="#FFFFFF"/>
+          <TextView  
+            android:id="@+id/txtCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:textColor="#FFFFFF"/>
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/lytTopMenu"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:layout_gravity="center"
         android:layout_weight="1.25" >
 
         <ImageView
             android:id="@+id/imageViewLeft"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="120dp"
-            android:visibility="gone" 
-            android:layout_gravity="center"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageViewRight"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="100dp"
-            android:visibility="gone" 
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="100dp"
+            android:visibility="gone" />
+        <!--
+             <ZoomControls
+            android:id="@+id/zoomControls"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp" 
+            android:gravity="center" 
+            />
+        -->
+
+        <Button
+            android:id="@+id/btnTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTextLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTextTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTextBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bottom"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnTextCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center"
+            android:visibility="gone" />
+        
+         <Button
+            android:id="@+id/btnColor"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/arrow"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <LinearLayout

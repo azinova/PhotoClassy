@@ -1,20 +1,23 @@
 package com.azinova.photoclassy;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.graphics.PorterDuff;
 
 import com.azinova.photoclassy.globals.GlobalsClass;
 import com.azinova.splash.R;
@@ -25,9 +28,9 @@ public class EditClass extends Activity
 	ImageView imageView;
 	GlobalsClass globals;
 	int seekBarDetector;
+	PopupWindow popUp;
 	
     int i, j;
-    Drawable bitmapOrg;
 	private final int[] mColors =
 	{Color.BLUE, Color.GREEN, Color.RED};
 
@@ -47,7 +50,6 @@ public class EditClass extends Activity
 		
 		barHue.setOnSeekBarChangeListener(seekBarChangeListener); 
 		
-		bitmapOrg = EditClass.this.getResources().getDrawable(R.drawable.ic_launcher); 
 		
 		
 		Button btnBrightness = (Button)findViewById(R.id.btnBrightness);
@@ -114,9 +116,9 @@ public class EditClass extends Activity
 			{
 				
 				int mColor = (int) Math.floor(Math.random() * mColors.length);
-                imageView.setColorFilter(mColors[mColor], PorterDuff.Mode.MULTIPLY);
+                imageView.setColorFilter(mColors[mColor], PorterDuff.Mode.MULTIPLY); 
                 imageView.invalidate(); 
-			}
+			}  
 		});
 		
 		Button btnSharpness  = (Button)findViewById(R.id.btnSharpness);
@@ -126,7 +128,7 @@ public class EditClass extends Activity
             public void onClick(View v) 
             {
             	barHue.setProgress(0);
-				barHue.setVisibility(View.VISIBLE); 
+				barHue.setVisibility(View.VISIBLE);  
 				seekBarDetector = 5;
             	
             }
@@ -140,7 +142,131 @@ public class EditClass extends Activity
                     {
                             imageView.setImageBitmap(blurBitmap(globals.getBitmap()));
                     }
-            });
+        });
+		
+	    final LayoutInflater linflater1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    Button btnReservation = (Button)findViewById(R.id.btnColor);
+	    btnReservation.setOnClickListener(new View.OnClickListener()
+	    {
+	            
+	            public void onClick(View v) 
+	            {
+	                    View myView = linflater1.inflate(R.layout.popup_layout, null);
+	                    popUp = new PopupWindow(myView, 300, 300, true);
+	                    
+	                    popUp.showAtLocation(myView, Gravity.CENTER, 0, 0);
+	                
+	                    ImageView imageView_close = (ImageView)myView.findViewById(R.id.iv_close1);
+	                    imageView_close.setOnClickListener(new View.OnClickListener()
+	                    {
+	                            public void onClick(View v)
+	                            {
+	                                    popUp.dismiss();  
+	                            } 
+	                    }); 
+	                    ImageView iv2_cyan = (ImageView)myView.findViewById(R.id.imageView2_cyan);
+	                    iv2_cyan.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.CYAN,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView imageView3_lgtGrey = (ImageView)myView.findViewById(R.id.imageView3_lgtGrey);
+	                    imageView3_lgtGrey.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.LTGRAY,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView iv4_green = (ImageView)myView.findViewById(R.id.iv4_green);
+	                    iv4_green.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.GREEN,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView iv5_dkGrey = (ImageView)myView.findViewById(R.id.iv5_dkGrey);
+	                    iv5_dkGrey.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.DKGRAY,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView iv6_magenta = (ImageView)myView.findViewById(R.id.iv6_magenta);
+	                    iv6_magenta.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.MAGENTA,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView iv7_yello = (ImageView)myView.findViewById(R.id.iv7_yello);
+	                    iv7_yello.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.YELLOW,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    ImageView iv8_red = (ImageView)myView.findViewById(R.id.iv8_red);
+	                    iv8_red.setOnClickListener(new View.OnClickListener()
+	                    {
+							
+							@Override
+							public void onClick(View v)
+							{
+								imageView.setColorFilter(Color.RED,PorterDuff.Mode.MULTIPLY); 
+								popUp.dismiss();
+							}
+						});
+	                    
+	                
+	                    /*linearlayout = (LinearLayout) myView.findViewById(R.id.linearlayout1);
+	                    linflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	                    for ( i = 0; i < SessionManager.getManager().getDates().size(); i++) 
+	                    {
+	                            View childView = linflater.inflate(R.layout.popup_layout_details, null);
+	                            txtDate = (TextView)childView.findViewById(R.id.txtDate);
+	                            txtDate.setTextColor(Color.BLACK);
+	                            txtDate.setTextSize(16);
+	                            txtDate.setTypeface(null, Typeface.BOLD);
+	                            txtDate.setText(SessionManager.getManager().getDates().get(i));
+	                            childView.setTag(SessionManager.getManager().getDates().get(i));
+	                            childView.setOnClickListener(new View.OnClickListener()
+	                            {
+	                                    public void onClick(View arg0)
+	                                    {
+	                                           
+	                                    }
+	                            });
+	                            linearlayout.addView(childView);
+	                    }*/
+	                    
+	            }
+	    });
+		
 	}  
 	OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener()
 	{
@@ -188,6 +314,7 @@ public class EditClass extends Activity
 			{
 				
 	}}; 
+
 	  
 	public static ColorFilter adjustHue( float value ) 
 	{
@@ -440,4 +567,5 @@ public class EditClass extends Activity
         bitmap.getPixel(i+1, j-1) + bitmap.getPixel(i+1, j) + bitmap.getPixel(i+1, j+1)) / 9;
     }
 
+    
 }
